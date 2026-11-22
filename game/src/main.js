@@ -13,6 +13,7 @@ import { gameForScene } from './scenes.js';
 
 const params = new URLSearchParams(window.location.search);
 const scene = params.get('scene');
+if (scene) document.body.classList.add('scene-shot'); // staged shots: no entrance animations, so every card is fully visible
 const audio = createAudio();
 let game = scene ? gameForScene(scene) : createGame();
 if (!scene) game.phase = 'title';

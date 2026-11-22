@@ -55,7 +55,7 @@ export function cardElement(card, opts = {}) {
     const stats = el('div', 'card-stats');
     stats.append(statPip('attack', card.attack), statPip('health', card.health));
     node.append(stats);
-    if (!card.canAttack) node.classList.add('sick');
+    if (card.canAttack === false) node.classList.add('sick'); // board creatures only: hand cards carry no canAttack yet
   } else {
     const effect = el('div', 'card-stats');
     if (card.damage) effect.append(statPip('attack', card.damage));

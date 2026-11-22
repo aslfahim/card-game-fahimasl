@@ -6,27 +6,28 @@
 //   spell    — resolves at once, then leaves the game
 // Fields: id, name, kind, element, cost, attack, health (creatures),
 // damage/heal/draw (spells), text (what the card does, in plain words).
+// Card text is kept to two short lines so it never crowds the pips.
 
 export const CARD_POOL = [
   // -- 1-cost creatures: the opening plays --
-  { id: 'cinder-pup',   name: 'Cinder Pup',   kind: 'creature', element: 'fire',  cost: 1, attack: 2, health: 1, text: 'Kindle: +1 attack if your last card was Fire.' },
-  { id: 'ash-imp',      name: 'Ash Imp',      kind: 'creature', element: 'fire',  cost: 1, attack: 1, health: 2, text: 'Kindle: +1 attack if your last card was Fire.' },
-  { id: 'dew-sprite',   name: 'Dew Sprite',   kind: 'creature', element: 'water', cost: 1, attack: 1, health: 2, text: 'Douse: +1 damage against Fire creatures.' },
+  { id: 'cinder-pup',   name: 'Cinder Pup',   kind: 'creature', element: 'fire',  cost: 1, attack: 2, health: 1, text: 'Kindle: +1 attack after Fire.' },
+  { id: 'ash-imp',      name: 'Ash Imp',      kind: 'creature', element: 'fire',  cost: 1, attack: 1, health: 2, text: 'Kindle: +1 attack after Fire.' },
+  { id: 'dew-sprite',   name: 'Dew Sprite',   kind: 'creature', element: 'water', cost: 1, attack: 1, health: 2, text: 'Douse: +1 damage vs Fire.' },
   { id: 'pebble-golem', name: 'Pebble Golem', kind: 'creature', element: 'earth', cost: 2, attack: 2, health: 3, text: '' },
   { id: 'spark-eel',    name: 'Spark Eel',    kind: 'creature', element: 'storm', cost: 2, attack: 3, health: 1, text: '' },
-  { id: 'flame-hound',  name: 'Flame Hound',  kind: 'creature', element: 'fire',  cost: 2, attack: 3, health: 2, text: 'Kindle: +1 attack if your last card was Fire.' },
-  { id: 'tide-crab',    name: 'Tide Crab',    kind: 'creature', element: 'water', cost: 2, attack: 1, health: 4, text: 'Douse: +1 damage against Fire creatures.' },
+  { id: 'flame-hound',  name: 'Flame Hound',  kind: 'creature', element: 'fire',  cost: 2, attack: 3, health: 2, text: 'Kindle: +1 attack after Fire.' },
+  { id: 'tide-crab',    name: 'Tide Crab',    kind: 'creature', element: 'water', cost: 2, attack: 1, health: 4, text: 'Douse: +1 damage vs Fire.' },
   { id: 'mossback',     name: 'Mossback',     kind: 'creature', element: 'earth', cost: 3, attack: 3, health: 4, text: '' },
   { id: 'storm-kite',   name: 'Storm Kite',   kind: 'creature', element: 'storm', cost: 3, attack: 4, health: 2, text: '' },
-  { id: 'ember-knight', name: 'Ember Knight', kind: 'creature', element: 'fire',  cost: 3, attack: 3, health: 3, text: 'Kindle: +1 attack if your last card was Fire.' },
-  { id: 'raincaller',   name: 'Raincaller',   kind: 'creature', element: 'water', cost: 3, attack: 2, health: 4, text: 'Heals your hero 2 when played.' },
+  { id: 'ember-knight', name: 'Ember Knight', kind: 'creature', element: 'fire',  cost: 3, attack: 3, health: 3, text: 'Kindle: +1 attack after Fire.' },
+  { id: 'raincaller',   name: 'Raincaller',   kind: 'creature', element: 'water', cost: 3, attack: 2, health: 4, text: 'Heal your hero 2.' },
   { id: 'boulderback',  name: 'Boulderback',  kind: 'creature', element: 'earth', cost: 4, attack: 4, health: 5, text: '' },
-  { id: 'wildfire-drake', name: 'Wildfire Drake', kind: 'creature', element: 'fire', cost: 4, attack: 5, health: 3, text: 'Kindle: +1 attack if your last card was Fire.' },
+  { id: 'wildfire-drake', name: 'Wildfire Drake', kind: 'creature', element: 'fire', cost: 4, attack: 5, health: 3, text: 'Kindle: +1 attack after Fire.' },
   { id: 'tempest-roc',  name: 'Tempest Roc',  kind: 'creature', element: 'storm', cost: 4, attack: 4, health: 4, text: '' },
-  { id: 'frostfin',     name: 'Frostfin',     kind: 'creature', element: 'water', cost: 4, attack: 3, health: 5, text: 'Douse: +1 damage against Fire creatures.' },
-  { id: 'magma-colossus', name: 'Magma Colossus', kind: 'creature', element: 'fire', cost: 6, attack: 7, health: 6, text: 'Kindle: +1 attack if your last card was Fire.' },
-  { id: 'oakheart',     name: 'Ancient Oakheart', kind: 'creature', element: 'earth', cost: 6, attack: 5, health: 8, text: 'Heals your hero 3 when played.' },
-  { id: 'storm-sovereign', name: 'Storm Sovereign', kind: 'creature', element: 'storm', cost: 7, attack: 8, health: 6, text: 'Strikes the enemy hero for 2 when played.' },
+  { id: 'frostfin',     name: 'Frostfin',     kind: 'creature', element: 'water', cost: 4, attack: 3, health: 5, text: 'Douse: +1 damage vs Fire.' },
+  { id: 'magma-colossus', name: 'Magma Colossus', kind: 'creature', element: 'fire', cost: 6, attack: 7, health: 6, text: 'Kindle: +1 attack after Fire.' },
+  { id: 'oakheart',     name: 'Ancient Oakheart', kind: 'creature', element: 'earth', cost: 6, attack: 5, health: 8, text: 'Heal your hero 3.' },
+  { id: 'storm-sovereign', name: 'Storm Sovereign', kind: 'creature', element: 'storm', cost: 7, attack: 8, health: 6, text: 'Strike the enemy hero for 2.' },
   // -- spells --
   { id: 'fireball',     name: 'Fireball',     kind: 'spell', element: 'fire',  cost: 2, damage: 3, text: 'Deal 3 damage to any target.' },
   { id: 'douse',        name: 'Douse',        kind: 'spell', element: 'water', cost: 1, damage: 2, text: 'Deal 2 damage to a creature. +1 if it is Fire.' },
