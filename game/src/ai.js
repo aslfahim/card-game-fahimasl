@@ -21,8 +21,11 @@ function boardThreat(creature) {
 
 function pickRemovalTarget(game, card) {
   // The player's creature worth killing: the biggest threat a spell can finish.
+  // Douse hits Fire creatures harder — count the bonus when aiming.
+  const effective = (victim) => (card.damage || 0)
+    + (card.id === 'douse' && victim.element === 'fire' ? TUNING.douseBonus : 0);
   const targets = game.player.board
-    .filter((c) => c.health <= (card.damage || 0))
+    .filter((c) => c.health <= effective(c))
     .sort((a, b) => boardThreat(b) - boardThreat(a));
   return targets[0] || null;
 }
@@ -56,16 +59,22 @@ function playOneCard(game) {
 
   // 3. Creatures: strongest affordable first, but keep a Fire chain going
   //    when the last card played this turn was Fire (Kindle +1 attack).
+  //    A creature that survives the player's next turn is worth more than
+  //    a bigger one that dies before it ever strikes: prefer health above
+  //    the hardest hit the player's board can deal right now.
+  const hardestHit = Math.max(0, ...game.player.board.map((c) => c.attack));
+  const creatureScore = (c) => c.attack + c.health + (c.health > hardestHit ? 4 : 0);
   const creatures = hand
     .filter((c) => c.kind === 'creature' && side.mana >= c.cost)
-    .sort((a, b) => (b.attack + b.health) - (a.attack + a.health));
+    .sort((a, b) => creatureScore(b) - creatureScore(a));
   const chained = creatures.find((c) => c.element === 'fire' && side.lastElement === 'fire');
   const pick = chained || creatures[0];
   if (pick) return playCard(game, 'enemy', pick.uid, null);
 
-  // 4. Spare-mana face damage when the player is nearly beaten.
+  // 4. Spare-mana face damage when the player is nearly beaten — or when
+  //    the mana would otherwise go to waste at the end of the turn.
   const ball = hand.find((c) => c.id === 'fireball');
-  if (ball && side.mana >= ball.cost && game.player.life <= 12) {
+  if (ball && side.mana >= ball.cost && game.player.life <= 20) {
     return playCard(game, 'enemy', ball.uid, { kind: 'hero', who: 'player' });
   }
 
@@ -92,23 +101,27 @@ function attackOnce(game) {
     const firePrey = game.player.board
       .filter((c) => c.element === 'fire' && c.health <= attacker.attack + (attacker.element === 'water' ? TUNING.douseBonus : 0))
       .sort((a, b) => boardThreat(b) - boardThreat(a))[0];
-    if (firePrey && attacker.attack >= 3) {
+    if (firePrey && attacker.attack >= 2) {
       attackWith(game, 'enemy', attacker.uid, { kind: 'creature', who: 'player', uid: firePrey.uid });
       return true;
     }
   }
-  // Otherwise trade up: kill a player creature that would hit hard next turn.
-  for (const attacker of ready) {
+  // Otherwise trade up: a creature left standing hits every turn, so
+  // clearing the player's board matters more than a little face damage.
+  // Kill the hardest-hitting creature this attacker can finish — always
+  // when the victim is worth it, and when the attacker survives the trade.
+  const strikers = ready.slice().sort((a, b) => b.attack - a.attack);
+  for (const attacker of strikers) {
     const prey = game.player.board
-      .filter((c) => c.health <= attacker.attack && c.attack >= 3 && attacker.health > c.attack)
+      .filter((c) => c.health <= attacker.attack)
       .sort((a, b) => b.attack - a.attack)[0];
-    if (prey) {
+    if (prey && (prey.attack >= 2 || attacker.health > prey.attack)) {
       attackWith(game, 'enemy', attacker.uid, { kind: 'creature', who: 'player', uid: prey.uid });
       return true;
     }
   }
   // Otherwise go face — the pact is won by life.
-  const striker = ready.slice().sort((a, b) => b.attack - a.attack)[0];
+  const striker = strikers[0];
   attackWith(game, 'enemy', striker.uid, { kind: 'hero', who: 'player' });
   return true;
 }

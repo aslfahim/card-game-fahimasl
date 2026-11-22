@@ -2,8 +2,8 @@
 // One job: the rules. A duel is two sides (player, enemy), each with a
 // hero (life), a hand, a deck, a board of creatures and a mana pool.
 // Turns: gain a mana crystal, refill mana, draw a card, play cards,
-// attack with creatures, end turn. Creatures cannot attack the turn
-// they are played. Reduce the enemy hero to 0 life and the pact is yours.
+// attack with creatures, end turn. Creatures strike the turn they are
+// played. Reduce the enemy hero to 0 life and the pact is yours.
 //
 // Elemental combos — the decisions in every hand:
 //   KINDLE: playing a Fire card right after another Fire card this turn
@@ -108,7 +108,9 @@ export function playCard(game, who, uid, target) {
   side.lastElement = card.element;
 
   if (card.kind === 'creature') {
-    const placed = { ...card, health: card.health, maxHealth: card.health, attack: card.attack + kindle, canAttack: false };
+    // Creatures strike the turn they are played: a creature left standing
+    // hits every turn, so the table is a race to hold the board.
+    const placed = { ...card, health: card.health, maxHealth: card.health, attack: card.attack + kindle, canAttack: true };
     side.board.push(placed);
     if (card.id === 'raincaller') { side.life = Math.min(side.maxLife, side.life + 2); }
     if (card.id === 'oakheart') { side.life = Math.min(side.maxLife, side.life + 3); }

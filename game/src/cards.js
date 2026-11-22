@@ -29,7 +29,7 @@ export const CARD_POOL = [
   { id: 'storm-sovereign', name: 'Storm Sovereign', kind: 'creature', element: 'storm', cost: 7, attack: 8, health: 6, text: 'Strikes the enemy hero for 2 when played.' },
   // -- spells --
   { id: 'fireball',     name: 'Fireball',     kind: 'spell', element: 'fire',  cost: 2, damage: 3, text: 'Deal 3 damage to any target.' },
-  { id: 'douse',        name: 'Douse',        kind: 'spell', element: 'water', cost: 1, damage: 2, text: 'Deal 2 damage to a creature. +2 if it is Fire.' },
+  { id: 'douse',        name: 'Douse',        kind: 'spell', element: 'water', cost: 1, damage: 2, text: 'Deal 2 damage to a creature. +1 if it is Fire.' },
   { id: 'mend',         name: 'Mend',         kind: 'spell', element: 'water', cost: 2, heal: 5, text: 'Restore 5 life to your hero.' },
   { id: 'lightning-lash', name: 'Lightning Lash', kind: 'spell', element: 'storm', cost: 3, damage: 4, text: 'Deal 4 damage to a creature.' },
   { id: 'wild-growth',  name: 'Wild Growth',  kind: 'spell', element: 'earth', cost: 2, buff: 2, text: 'Give a friendly creature +2/+2.' },

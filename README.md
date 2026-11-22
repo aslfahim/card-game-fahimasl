@@ -11,8 +11,7 @@ You are the Emberkeeper. Cinder, the Ash Herald, stands across the table with 30
 ## How it plays
 
 - **Mana** grows by one crystal each turn (up to 10) and refills every turn.
-- **Creatures** stay on the table and strike on later turns — they rest the turn they are played.
-- **Spells** resolve at once: Fireball, Douse, Mend, Lightning Lash, Wild Growth, Ember Surge, Quake, Cyclone.
+- **Creatures** stay on the table and strike the turn they are played — a creature left standing hits every turn.- **Spells** resolve at once: Fireball, Douse, Mend, Lightning Lash, Wild Growth, Ember Surge, Quake, Cyclone.
 - **Kindle:** playing a Fire card right after another Fire card this turn gives it +1 attack or +1 damage. Fire feeds fire.
 - **Douse:** Water cards deal +1 damage to Fire creatures. Bring water to a firefight.
 - **Fatigue:** drawing from an empty deck hurts, more each time.

@@ -209,7 +209,7 @@ export function renderOverlay(game, hooks) {
     const rules = el('div', 'title-rules');
     rules.append(el('div', 'rule-line', '▲ Fire feeds Fire — chain Fire cards to Kindle +1.'));
     rules.append(el('div', 'rule-line', '● Water douses Fire — Water deals +1 to Fire creatures.'));
-    rules.append(el('div', 'rule-line', '◆ Mana grows each turn. Creatures rest a turn before they can strike.'));
+    rules.append(el('div', 'rule-line', '◆ Mana grows each turn. Creatures strike the turn they are played.'));
     panel.append(rules);
     const play = el('button', 'btn btn-big', 'Begin the duel');
     play.addEventListener('click', hooks.onStart);
