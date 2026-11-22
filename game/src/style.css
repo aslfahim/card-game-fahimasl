@@ -1,0 +1,218 @@
+/* Ember Pact — style.css
+   One job: the look of the table. A dark walnut table, brass trim, and
+   cards that read at thumbnail size: big cost gem, big element glyph,
+   big attack and health pips, colour AND shape for every element. */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #14100c radial-gradient(ellipse at 50% 0%, #2a1f14 0%, #14100c 70%);
+  color: #f3e9d2;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+#app { max-width: 1240px; margin: 0 auto; padding: 10px 16px 20px; }
+
+#masthead {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px; padding: 6px 2px 10px; border-bottom: 2px solid #6b4f2a;
+}
+.brand { display: flex; align-items: baseline; gap: 10px; }
+.brand-flame { font-size: 28px; }
+.brand-name { font-size: 30px; letter-spacing: 4px; color: #ffb347; font-weight: bold; }
+.brand-sub { font-style: italic; color: #c9b48a; font-size: 14px; }
+.brand-rules { display: flex; gap: 8px; flex-wrap: wrap; }
+.rule-chip {
+  font-size: 12px; padding: 4px 9px; border-radius: 20px;
+  border: 1px solid #6b4f2a; background: #241a10; color: #e8dcc0;
+}
+.rule-chip.fire { border-color: #e5484d; }
+.rule-chip.water { border-color: #3b82f6; }
+.rule-chip.earth { border-color: #65a30d; }
+.rule-chip.storm { border-color: #a855f7; }
+
+#table {
+  position: relative;
+  background: radial-gradient(ellipse at 50% 30%, #2f6b3a 0%, #1e4a27 55%, #14301a 100%);
+  border: 6px solid #5d3f1e; border-radius: 18px;
+  padding: 12px 16px; margin-top: 10px;
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.55), 0 8px 30px rgba(0, 0, 0, 0.5);
+  min-height: 640px;
+}
+
+.table-top, .table-bottom { display: flex; gap: 14px; align-items: flex-start; }
+.hero-panel {
+  flex: 0 0 250px; background: rgba(20, 12, 6, 0.72); border: 2px solid #6b4f2a;
+  border-radius: 12px; padding: 10px 12px; cursor: pointer;
+  display: grid; grid-template-columns: 44px 1fr; gap: 4px 10px;
+}
+.hero-panel.active-turn { border-color: #ffb347; box-shadow: 0 0 14px rgba(255, 179, 71, 0.55); }
+.hero-sigil { font-size: 34px; grid-row: span 2; text-align: center; line-height: 1.1; }
+.hero-name { font-size: 15px; font-weight: bold; color: #ffe1a8; }
+.hero-life { font-size: 20px; margin-top: 2px; }
+.life-heart { color: #ef4444; margin-right: 4px; }
+.life-num { font-weight: bold; font-size: 24px; }
+.life-max { color: #c9b48a; font-size: 13px; }
+.hero-mana { font-size: 15px; color: #93c5fd; grid-column: 2; }
+.mana-gem { color: #60a5fa; margin-right: 4px; }
+.mana-num { font-weight: bold; font-size: 18px; }
+.mana-label { color: #c9b48a; font-size: 12px; margin-left: 3px; }
+.hero-deck { grid-column: 2; font-size: 12px; color: #c9b48a; }
+
+.hand { display: flex; gap: 8px; flex: 1; flex-wrap: wrap; align-items: flex-start; }
+.hand-count { align-self: center; font-size: 12px; color: #e8dcc0; font-style: italic; }
+.enemy-hand { justify-content: flex-end; }
+.enemy-hand .card { width: 56px; height: 78px; }
+
+.board-row {
+  display: flex; gap: 10px; min-height: 132px; align-items: center;
+  border-top: 1px dashed rgba(243, 233, 210, 0.25);
+  border-bottom: 1px dashed rgba(243, 233, 210, 0.25);
+  padding: 8px 4px; margin: 8px 0;
+}
+.board-empty { color: rgba(243, 233, 210, 0.6); font-style: italic; font-size: 14px; padding-left: 8px; }
+.table-middle { display: flex; gap: 14px; align-items: center; min-height: 28px; padding: 0 4px; }
+.turn-banner { font-size: 15px; font-weight: bold; color: #ffe1a8; }
+.combo-banner {
+  font-size: 13px; font-weight: bold; color: #fff; background: #b45309;
+  border: 1px solid #fbbf24; border-radius: 20px; padding: 3px 12px;
+  animation: pulse 1s ease-in-out infinite alternate;
+}
+@keyframes pulse { from { box-shadow: 0 0 4px #f59e0b; } to { box-shadow: 0 0 16px #f59e0b; } }
+/* Card faces. A card is 118 x 158 on the table: cost gem top-left,
+   element badge top-right, a big art glyph, the name, the rules text,
+   and attack / health pips along the bottom. */
+
+.card {
+  position: relative; width: 118px; height: 158px; flex: 0 0 auto;
+  border-radius: 10px; padding: 26px 8px 8px;
+  background: linear-gradient(160deg, #fdf6e3 0%, #f3e9d2 60%, #e7d9b8 100%);
+  color: #241a10; border: 3px solid var(--element, #888);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer; user-select: none;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  animation: deal-in 0.35s ease backwards;
+}
+@keyframes deal-in {
+  from { transform: translateY(-26px) rotate(-4deg); opacity: 0; }
+  to { transform: translateY(0) rotate(0deg); opacity: 1; }
+}
+.player-hand .card:hover { transform: translateY(-10px) rotate(-1deg); box-shadow: 0 10px 18px rgba(0, 0, 0, 0.6); }
+.card.selected {
+  transform: translateY(-14px); outline: 3px solid #fbbf24;
+  box-shadow: 0 0 18px rgba(251, 191, 36, 0.8);
+}
+.card.playable { filter: brightness(1.04); }
+.card.disabled { filter: grayscale(0.45) brightness(0.82); cursor: not-allowed; }
+.card.sick::after {
+  content: "RESTING"; position: absolute; top: 50%; left: 0; right: 0;
+  text-align: center; font-size: 11px; letter-spacing: 2px; color: #6b7280;
+  background: rgba(255, 255, 255, 0.65); padding: 2px 0;
+}
+.card.on-board { width: 108px; height: 146px; animation: snap-in 0.25s ease backwards; }
+@keyframes snap-in {
+  from { transform: scale(0.7) rotate(6deg); opacity: 0; }
+  to { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.card.on-board:hover { transform: translateY(-4px); }
+
+.card-cost {
+  position: absolute; top: -8px; left: -8px; width: 30px; height: 30px;
+  border-radius: 50%; background: #1d4ed8; color: #fff; font-weight: bold;
+  font-size: 17px; display: flex; align-items: center; justify-content: center;
+  border: 2px solid #bfdbfe; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+.element-badge {
+  position: absolute; top: 5px; right: 6px; display: flex; gap: 3px; align-items: center;
+  background: var(--element-light); border: 1px solid var(--element);
+  border-radius: 12px; padding: 1px 7px 1px 4px; font-size: 11px; font-weight: bold;
+  color: var(--element-dark);
+}
+.element-glyph { font-size: 13px; }
+.card-art { font-size: 40px; text-align: center; line-height: 1.05; margin: 2px 0 4px; }
+.card-name { font-size: 14px; font-weight: bold; text-align: center; line-height: 1.1; }
+.card-text { font-size: 11px; line-height: 1.25; text-align: center; color: #4b3a26; margin-top: 4px; min-height: 28px; }
+.card-stats {
+  position: absolute; left: 6px; right: 6px; bottom: 6px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.stat-pip {
+  display: inline-flex; align-items: center; gap: 3px; font-weight: bold; font-size: 15px;
+  border-radius: 8px; padding: 1px 7px; color: #fff;
+}
+.stat-pip.attack { background: #b91c1c; }
+.stat-pip.health { background: #15803d; }
+.stat-pip.draw { background: #475569; font-size: 12px; }
+.stat-icon { font-size: 13px; }
+
+/* Card backs: the Ash Herald's hidden hand. */
+.card-back {
+  background: repeating-linear-gradient(45deg, #7f1d1d 0 10px, #991b1b 10px 20px);
+  border-color: #450a0a; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 6px; padding: 8px;
+}
+.card-back-sigil { font-size: 26px; color: #fecaca; }
+.card-back-word { font-size: 8px; letter-spacing: 2px; color: #fecaca; font-weight: bold; }
+
+/* Controls, log and overlays. */
+.controls { display: flex; gap: 10px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+.btn {
+  font-family: inherit; font-size: 15px; font-weight: bold; cursor: pointer;
+  background: #78350f; color: #ffedd5; border: 2px solid #f59e0b; border-radius: 10px;
+  padding: 9px 16px; transition: filter 0.15s ease, transform 0.15s ease;
+}
+.btn:hover:not(:disabled) { filter: brightness(1.2); transform: translateY(-1px); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-big { font-size: 19px; padding: 13px 26px; }
+.hint { font-size: 13px; color: #e8dcc0; font-style: italic; }
+.game-log {
+  margin-top: 10px; background: rgba(20, 12, 6, 0.72); border: 1px solid #6b4f2a;
+  border-radius: 10px; padding: 8px 12px; font-size: 13px; min-height: 58px;
+}
+.log-title { font-weight: bold; color: #ffb347; font-size: 12px; letter-spacing: 1px; margin-bottom: 3px; }
+.log-line { color: #e8dcc0; line-height: 1.35; }
+
+#overlay { display: none; }
+#overlay.shown {
+  display: flex; position: fixed; inset: 0; z-index: 20;
+  background: rgba(10, 6, 3, 0.82); align-items: center; justify-content: center;
+}
+.overlay-panel {
+  position: relative; max-width: 620px; width: 90%; text-align: center;
+  background: linear-gradient(160deg, #2a1f14, #171008);
+  border: 3px solid #b45309; border-radius: 18px; padding: 34px 30px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+  animation: snap-in 0.3s ease backwards;
+}
+.win-panel { border-color: #f59e0b; box-shadow: 0 0 50px rgba(245, 158, 11, 0.45), 0 20px 60px rgba(0, 0, 0, 0.7); }
+.loss-panel { border-color: #57534e; }
+.title-emblem { font-size: 52px; }
+.game-title { font-size: 46px; letter-spacing: 6px; color: #ffb347; margin: 8px 0; }
+.game-tagline { font-size: 17px; line-height: 1.45; color: #f3e9d2; margin-bottom: 18px; }
+.title-rules { text-align: left; display: inline-block; margin-bottom: 20px; }
+.rule-line { font-size: 15px; line-height: 1.6; color: #e8dcc0; }
+.title-foot { margin-top: 16px; font-size: 13px; color: #c9b48a; font-style: italic; }
+
+.ember {
+  position: absolute; bottom: -10px; width: 8px; height: 8px; border-radius: 50%;
+  animation: ember-rise 2.6s ease-in infinite; pointer-events: none; opacity: 0.9;
+}
+@keyframes ember-rise {
+  from { transform: translateY(0) scale(1); opacity: 0.9; }
+  to { transform: translateY(-560px) translateX(30px) scale(0.2); opacity: 0; }
+}
+
+.float-num {
+  position: absolute; z-index: 30; font-size: 26px; font-weight: bold;
+  transform: translateX(-50%); pointer-events: none;
+  animation: float-up 1.2s ease-out forwards; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+}
+.float-num.damage { color: #ef4444; }
+.float-num.heal { color: #4ade80; }
+@keyframes float-up {
+  from { opacity: 1; margin-top: 0; }
+  to { opacity: 0; margin-top: -46px; }
+}
+
+#footnote { margin-top: 12px; font-size: 12px; color: #a89878; text-align: center; }
